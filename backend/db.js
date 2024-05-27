@@ -1,5 +1,4 @@
 const mongoose =require("mongoose");
-const bcrypt=require('bcrypt')
 const userSchema= new mongoose.Schema({
         username:{
             type:String,
@@ -28,22 +27,17 @@ const userSchema= new mongoose.Schema({
             maxLength:50
         }
 })
-
-// Method to generate a hash from plain text
-UserSchema.methods.createHash = async function (plainTextPassword) {
-    const saltRounds = 10;
-
-    const salt = await bcrypt.genSalt(saltRounds);
-    return await bcrypt.hash(plainTextPassword, salt);
-  
-  };
-  
-
-UserSchema.methods.validatePassword = async function (candidatePassword) {
-    return await bcrypt.compare(candidatePassword, this.password_hash);
-  };
-  
-
-const User=mongoose.model('Users',userSchema);
-
-module.exports={User}
+const accountSchema= new mongoose.Schema({
+    user:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Users',
+        required:true
+    },
+    balance:{
+        type:Number,
+        required:true
+    }
+})
+const Users=mongoose.model('Users',userSchema);
+const Accounts=mongoose.model('Accounts',accountSchema)
+module.exports={Users,Accounts}
