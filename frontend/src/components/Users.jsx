@@ -15,10 +15,11 @@ export const Users=()=>{
     useEffect(()=>{
         axios.get('http://localhost:3000/api/v1/user/bulk?filter='+filter, {headers:headers})
         .then(res=>{
-            setUsers(res.data.user)
+            setUsers(res.data.users)
+            
         })
     },[filter])
-    console.log(users);
+    console.log( "users " , users);
     return(
         <div>
                     <div>Users</div>
@@ -28,8 +29,11 @@ export const Users=()=>{
                         }} placeholder="Search Users..."  />
                     </div>
                     <div>
+
                         {users.map((user)=>{
-                             <User user={user}></User>
+                            console.log(user);
+                         return  <User key={user._id} user={user}></User>
+                             
                         })}
                     </div>
         </div>
@@ -38,13 +42,13 @@ export const Users=()=>{
 
 export const User=({user})=>{
     const navigate=useNavigate();
-        return(
+        return(     
             <div>
                     <div>
                         {user.firstName} {user.lastName}
                     </div>
                     <div>
-                        <Button onClick={(e)=>{
+                        <Button onClick={()=>{
                                 navigate('/send?id='+user._id+ "&name="+user.firstName);
                         }} value="Send Money"></Button>
                     </div>

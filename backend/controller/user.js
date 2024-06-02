@@ -130,7 +130,7 @@ async function updateUser(req,res){
 }
 
 async function getUser(req,res){
-        const filter=req.query.parameter||"";
+        const filter=req.query.filter||"";
         const users=await Users.find({
             $or:[
                 {firstName:{$regex:filter, $options:'i'}},
